@@ -1,0 +1,20 @@
+#macros for main cpp file
+CC     	    = g++
+CFLAGS 	    = -Wall
+INCLUDE_DIR = ./lib
+
+#macros for our shared library
+LIB_DIR    =./lib
+LIB_NAME   =hello
+
+#.PHONY specifies this target is not a file
+.PHONY: hello_lib
+
+#targets and dependencies
+all: hello_world
+
+hello_world: hello_lib
+	$(CC) ${CFLAGS} -I${INCLUDE_DIR} -L${LIB_DIR} hello_world.cpp -o hello -l${LIB_NAME}
+
+hello_lib:
+	(cd ${LIB_DIR} && make)
