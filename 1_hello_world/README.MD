@@ -104,4 +104,7 @@ in all locations in the `LD_LIBRARY_PATH` variables. So we need to do:
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./lib
 ```
 
-and now if we run the code it works.
+and now if we run the code it works. An additional benefit to shared libraries
+is that we can now distribute the `hello_world` binary and, given some limitations,
+if the `libhello.so` file is also on compute that we distributed to the binary can be
+run.
