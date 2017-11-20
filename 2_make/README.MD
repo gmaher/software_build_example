@@ -127,7 +127,9 @@ hello_lib:
 ```
 
 We have replace the `hello_lib` target with a command that tells make to open
-a new shell and to `cd` to the library directory and call make there.
+a new shell and to `cd` to the library directory and call make there. Since the
+`hello_lib` target no longer references a file, we need to add the `.PHONY` modifier
+near the top of the makefile to tell make this.
 
 If we now call make from the top directory we get the output
 ```
