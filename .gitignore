@@ -1,3 +1,8 @@
+#SELF ADDED
+*.cmake
+*/CMakeCache.txt
+*/CMakeFiles
+*/hello_world
 # Prerequisites
 *.d
 

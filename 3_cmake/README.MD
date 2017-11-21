@@ -29,6 +29,9 @@ some common commands:
 #set minimum cmake version required
 cmake_minimum_required (VERSION 3.5)
 
+#Set project name
+project (HelloProject)
+
 #set variable with name VARIABLE_NAME to 1
 set (VARIABLE_NAME 1)
 
@@ -36,12 +39,17 @@ set (VARIABLE_NAME 1)
 set (INCLUDE_DIR "/path/to/include_files")
 
 #look in a path for header files
-#we can also reference a variable's value
+#we can also reference a variable"s value
 include_directories("/home/user/...")
 include_directories(${INCLUDE_DIR})
 
-#Build the shared library Hello
+#define an option (shows up in the CMake GUI so users can change it, or via -D)
+option (option_name "this is the option description" ON)
+
+#Build the library Hello, static by default
 add_library(Hello hello.cpp)
+#or shared
+add_library(Hello SHARED hello.cpp)
 
 #Add an executable to build
 add_executable(hello_world hello_world.cpp)
@@ -50,7 +58,7 @@ add_executable(hello_world hello_world.cpp)
 target_link_libraries(hello_world Hello)
 
 #Look in subdirectory for CMakeLists.txt file and execute it
-add_subdirectory('/path/to/subdirectory')
+add_subdirectory("/path/to/subdirectory")
 ```
 
 ## Conditional statements, loops and functions in CMake
@@ -59,9 +67,9 @@ depending on certain conditions, for example we can test for the existence
 of certain files, what operating system we are on etc.
 ```cmake
 if (CONDITION)
-  include_directories('/path/to/library/A')
+  include_directories("/path/to/library/A")
 elseif (CONDITION2)
-  include_directories('/path/to/library/B')
+  include_directories("/path/to/library/B")
 else (CONDITION3)
   #do some other stuff
 endif(CONDITION)
@@ -88,6 +96,74 @@ function(func_name var1 var2)
 endfunction(func_name)
 ```
 
-## Code Generation with CMake
+## Passing CMake Options to Source Code
+We may wish to change our source code depending on the conditions passed to CMake,
+for example using different code depending on operating system etc. This can be done
+using CMake's `configure_file` command. configure_file copies the input file to
+another location and modifies text between `@` symbols. It is common practice
+to add `.in` after the file extension for files that will be modified by CMake.
 
+An example:
+```cmake
+#CMakeLists.txt
+PROJECT(hello_world)
+cmake_minimum_required(VERSION 3.0)
+
+set (PRINT_PHRASE "we changed the phrase\\n")
+configure_file("./lib/hello.cpp.in" "./lib/hello.cpp")
+add_library(hello SHARED "./lib/hello.cpp")
+include_directories("./lib")
+add_executable(hello_world hello_world.cpp)
+target_link_libraries(hello_world hello)
+```
+```C++
+//./lib/hello.cpp.in
+#include <iostream>
+
+void say_hello(){
+  std::cout << "@PRINT_PHRASE@";
+}
+```
+```C++
+//./lib/hello.h
+void say_hello();
+```
+```C++
+#include "hello.h"
+
+int main(){
+  say_hello();
+  return 0;
+}
+```
+
+Running `cmake .` in the current directory we get the output
+```
+-- The C compiler identification is GNU 5.4.0
+-- The CXX compiler identification is GNU 5.4.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/marsdenlab/projects/software_build_example/3_cmake
+```
+and the file `./lib/hello.cpp` will have also been generated:
+```C++
+//./lib/hello.cpp
+#include <iostream>
+
+void say_hello(){
+  std::cout << "we changed the phrase\n";
+}
+```
 ## linking against external libraries
