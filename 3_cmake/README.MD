@@ -166,4 +166,3 @@ void say_hello(){
   std::cout << "we changed the phrase\n";
 }
 ```
-## linking against external libraries
