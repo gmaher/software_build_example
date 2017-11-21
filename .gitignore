@@ -2,7 +2,9 @@
 *.cmake
 */CMakeCache.txt
 */CMakeFiles
+*/*/CMakeFiles
 */hello_world
+*/build
 # Prerequisites
 *.d
 

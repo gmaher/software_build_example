@@ -1,0 +1,4 @@
+set(local_lib_DIR @local_lib_DIR@})
+set(local_lib_INCLUDE @local_lib_INCLUDE@)
+set(local_lib_LIBRARY @local_lib_LIBRARY@)
+set(local_lib_TARGET @local_lib_TARGET@)

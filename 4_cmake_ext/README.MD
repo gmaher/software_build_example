@@ -36,3 +36,35 @@ On Ubuntu the prefix is usually `/usr` and/or `/usr/local`.
 The find_package command creates a variable named `<package>_DIR`, that will
 be autofilled to the found directory, if it is discovered, or will otherwise
 need to be specified when running CMake (via command line or the CMakeLists.txt file).
+
+## Finding a package in a different location
+
+Sometimes the package we want to link is not installed, e.g. because we just built
+it in a subdirectory. In this case there will not be a Find<package>.cmake file
+in the CMAKE_MODULE_PATH, and so the external packages CMakeLists.txt file will
+have to provide instructions to create the required `.cmake` files when building.
+This can be done using a `.cmake.in` file and CMakes `configure_file` command.
+The `.cmake` file should export the names and locations of all header files and
+libraries that other programs will need to link against to use the external library.
+
+## ExternalProject_ADD Function
+Sometimes we wish to allow our build process to download dependencies and build
+those as well (known as a SuperBuild). This can be done using CMake's ExternalProject_ADD
+command.
+
+The ExternalProject_ADD command lets us specify instructions for downloading,
+configuring and building an external project. An example of the syntax is (taken from
+  [here](https://github.com/Sarcasm/cmake-superbuild))
+```cmake
+ExternalProject_Add (ep_boost
+  URL http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download
+  URL_MD5 d6eef4b4cacb2183f2bf265a5a03a354
+  CONFIGURE_COMMAND ./bootstrap.sh --with-libraries=atomic,date_time,filesystem,program_options,system,thread
+  BUILD_COMMAND ./b2 link=static
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND ""
+)
+```
+## Example: building and finding a local library
+
+## Example: ExternalProject_ADD to download and build an external project
