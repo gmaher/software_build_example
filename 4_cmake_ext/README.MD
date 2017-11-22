@@ -108,6 +108,10 @@ find_package(local_lib REQUIRED)
 include_directories(${local_lib_INCLUDE})
 target_link_libraries(main ${local_lib_TARGET})
 ```
+Note that we reference the variables `local_lib`, `local_lib_TARGET`,
+`local_lib_INCLUDE` without declaring them. This is because they are exported
+when building `local_lib` into its `local_lib-config.cmake` file and then found
+by the call to `find_package(local_lib REQUIRED)`.
 
 The CMakeLists.txt in `./local_lib` is then set up to configure a `local_lib-config.cmake`
 file to export the required variables:
@@ -140,8 +144,5 @@ set(local_lib_INCLUDE @local_lib_INCLUDE@)
 set(local_lib_LIBRARY @local_lib_LIBRARY@)
 set(local_lib_TARGET @local_lib_TARGET@)
 ```
-
-The `find_package(local_lib REQUIRED)` command in the main CMakeLists.txt file
-then allows use to access the exported variables from local_lib.
 
 ## Example: ExternalProject_ADD to download and build an external project
