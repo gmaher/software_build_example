@@ -1,0 +1,4 @@
+/usr/bin/libhello/libhello.so
+/usr/bin/libhello/hello.h
+/usr/bin/libhello/hello_world
+/usr/bin/hello_world.sh

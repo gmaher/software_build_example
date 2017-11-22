@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export LD_LIBRARY_PATH=@CMAKE_INSTALL_PREFIX@/bin/libhello
+@CMAKE_INSTALL_PREFIX@/bin/libhello/hello_world

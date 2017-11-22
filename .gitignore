@@ -5,6 +5,7 @@
 */*/CMakeFiles
 */hello_world
 */build
+*.sh
 # Prerequisites
 *.d
 
