@@ -159,3 +159,13 @@ DOWNLOAD_COMMAND git clone https://github.com/InsightSoftwareConsortium/ITK.git)
 ```
 using the `add_subdirectory` command will then download ITK and, since ITK has a
 CMakeLists.txt file, cmake will then proceed to build it.
+
+## CMake Export command
+
+Export targets from the build tree for use by outside projects.
+
+```CMake
+export(EXPORT <export-name> [NAMESPACE <namespace>] [FILE <filename>])
+```
+
+Create a file <filename> that may be included by outside projects to import targets from the current project’s build tree. This is useful during cross-compiling to build utility executables that can run on the host platform in one project and then import them into another project being compiled for the target platform. If the NAMESPACE option is given the <namespace> string will be prepended to all target names written to the file.

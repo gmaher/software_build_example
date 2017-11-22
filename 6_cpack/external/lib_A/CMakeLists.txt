@@ -1,0 +1,8 @@
+PROJECT(LIB_A)
+cmake_minimum_required(VERSION 3.0)
+set(LIB_A_DIR ${CMAKE_CURRENT_LIST_DIR})
+message(${LIB_A_DIR})
+set(LIB_A_HEADER ${LIB_A_DIR}/lib_A.h)
+add_library(lib_A SHARED ${LIB_A_DIR}/lib_A.cpp)
+list(APPEND EXT_INCLUDE_DIRS ${LIB_A_DIR})
+list(APPEND EXT_LIB_TARGETS lib_A)
