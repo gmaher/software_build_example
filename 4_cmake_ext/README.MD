@@ -146,3 +146,16 @@ set(local_lib_TARGET @local_lib_TARGET@)
 ```
 
 ## Example: ExternalProject_ADD to download and build an external project
+This is similar to the previous example, except now we have a subdirectory with
+a CMakeLists.txt file that invokes the ExternalProject_ADD command.
+```cmake
+include (ExternalProject)
+
+#set prefix so project is downloaded to right directory
+set(EP_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
+
+ExternalProject_ADD(ITK
+DOWNLOAD_COMMAND git clone https://github.com/InsightSoftwareConsortium/ITK.git)
+```
+using the `add_subdirectory` command will then download ITK and, since ITK has a
+CMakeLists.txt file, cmake will then proceed to build it.
