@@ -86,4 +86,62 @@ ExternalProject_Add (ep_boost
 ```
 ## Example: building and finding a local library
 
+We have a file `main.cpp` that uses code from `./local_lib/local_lib.cpp`. We want
+to set up the build process for `main.cpp` to also build `local_lib` and properly
+include its header files and link against its shared libraries.
+
+In our main CMakeLists.txt file we use the `add_subdirectory` comman:
+```cmake
+PROJECT("CMAKE_EXT")
+cmake_minimum_required(VERSION 3.0)
+
+message("Building main library, directory is: ${CMAKE_SOURCE_DIR}")
+add_executable(main main.cpp)
+
+add_subdirectory("${CMAKE_SOURCE_DIR}/local_lib")
+message("TEST_VAR=${TEST_VAR}")
+#Lets try to find the package
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/local_lib")
+
+find_package(local_lib REQUIRED)
+
+include_directories(${local_lib_INCLUDE})
+target_link_libraries(main ${local_lib_TARGET})
+```
+
+The CMakeLists.txt in `./local_lib` is then set up to configure a `local_lib-config.cmake`
+file to export the required variables:
+```cmake
+PROJECT("local_lib")
+cmake_minimum_required(VERSION 3.0)
+set(TEST_VAR "test to see if we can access TEST_VAR")
+message("building local lib, directory is: ${CMAKE_CURRENT_SOURCE_DIR}")
+
+set(local_lib_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(local_lib_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(local_lib_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${local_lib_LIBRARY})
+add_library(local_lib SHARED ${local_lib_DIR}/local_lib.cpp)
+set(local_lib_TARGET local_lib)
+
+configure_file(${local_lib_DIR}/local_lib-config.cmake.in
+                ${local_lib_DIR}/local_lib-config.cmake)
+
+```
+Note that we change `CMAKE_LIBRARY_OUTPUT_DIRECTORY` to make sure libraries
+from local_lib get built into the correct directory.
+
+We use the file `local_lib-config.cmake.in` to generate the config file using
+CMake's `@@` notation:
+```cmake
+set(local_lib_DIR @local_lib_DIR@})
+set(local_lib_INCLUDE @local_lib_INCLUDE@)
+set(local_lib_LIBRARY @local_lib_LIBRARY@)
+set(local_lib_TARGET @local_lib_TARGET@)
+```
+
+The `find_package(local_lib REQUIRED)` command in the main CMakeLists.txt file
+then allows use to access the exported variables from local_lib.
+
 ## Example: ExternalProject_ADD to download and build an external project
