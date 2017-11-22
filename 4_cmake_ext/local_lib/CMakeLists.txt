@@ -1,6 +1,6 @@
 PROJECT("local_lib")
 cmake_minimum_required(VERSION 3.0)
-
+set(TEST_VAR "test to see if we can access TEST_VAR")
 message("building local lib, directory is: ${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(local_lib_DIR ${CMAKE_CURRENT_SOURCE_DIR})

@@ -5,7 +5,7 @@ message("Building main library, directory is: ${CMAKE_SOURCE_DIR}")
 add_executable(main main.cpp)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/local_lib")
-
+message("TEST_VAR=${TEST_VAR}")
 #Lets try to find the package
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/local_lib")
 

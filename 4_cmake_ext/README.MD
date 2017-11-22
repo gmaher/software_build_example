@@ -6,6 +6,25 @@ Alternatively we may have an already built external library we want to link agai
 Finally we may want to retrieve the source code of an external library from
 somewhere, then build it and link against it.
 
+## Building an external library and linking against it
+If the external library we are trying to build and link against has a CMakeLists.txt
+file, it is very easy to build it simultaneously with our main files.
+
+CMake offers the command `add_subdirectory` with which can specify a path,
+containing a CMakeLists.txt file, that CMake will then enter into and execute
+the found CMakeLists.txt file.
+
+The `add_subdirectory` command creates a new scope which the parent scope
+does not have access to, however the new scope will inherit all variables
+from the parent scope.
+
+If we wish to access variables from the schild scope we can use
+```cmake
+set(VAR_NAME VAR_VALUE PARENT_SCOPE)
+```
+or we can use CMake's `configure_file` and `find_package` commands, which we
+explain next.
+
 ## Finding an installed package
 
 Many libraries come pre-installed with our operating system, or are installed
