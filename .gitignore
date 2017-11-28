@@ -5,7 +5,8 @@
 */*/CMakeFiles
 */hello_world
 */build
-*.sh
+5_Cmake_Installing/*.sh
+6_cpack/*.sh
 # Prerequisites
 *.d
 
