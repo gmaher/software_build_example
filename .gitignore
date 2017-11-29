@@ -8,6 +8,7 @@
 5_Cmake_Installing/*.sh
 6_cpack/*.sh
 7_BuildBot/hello_world/master/sandbox/
+7_BuildBot/hello_world/worker
 *.sqlite
 # Prerequisites
 *.d

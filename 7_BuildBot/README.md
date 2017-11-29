@@ -17,9 +17,18 @@ source sandbox/bin/activate
 pip install 'buildbot[bundle]'
 buildbot create-master master
 mv master/master.cfg.sample master/master.cfg
+buildbot start master
 ```
+
+
+```bash
+pip install buildbot-worker
+pip install setuptools-trial
+buildbot-worker create-worker worker localhost example-worker pass
+```
+
 Here is what the master/master.cfg config file looks like:
-```
+```python
 # -*- python -*-
 # ex: set filetype=python:
 
