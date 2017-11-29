@@ -7,6 +7,8 @@
 */build
 5_Cmake_Installing/*.sh
 6_cpack/*.sh
+7_BuildBot/hello_world/master/sandbox/
+*.sqlite
 # Prerequisites
 *.d
 
