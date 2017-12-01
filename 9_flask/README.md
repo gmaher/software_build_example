@@ -4,6 +4,8 @@ Flask is a python package that lets us build webservers.
 
 see the Flask api http://flask.pocoo.org/docs/0.12/api/
 
+or flask on github: https://github.com/pallets/flask/blob/master/flask/app.py
+
 This content is from https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
 
 see also
@@ -95,3 +97,45 @@ The form looks like the following, note that actions specifies the url to submit
 
 ## Building an API with flask
 see https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+
+Building an API means we need to define url endpoints that return JSON data when
+visited. The `Flask` object defines a decorator function called `route`, which allows use to define functions and associate them with a particular url. We can additionally specify whether the url expects `GET`, `POSTS` requests etc.
+
+Note for these examples it is assumed that the `Flask` object has already been created.
+```python
+from flask import jsonify
+@app.route('/api/v1.0/posts', methods=['GET'])
+def get_all_posts():
+  posts = [{'author':'bob','content':'blah blah'},
+            {'author':'max','content':'new zealand m8'}]
+  return jsonify({'posts':posts})
+```
+we can also create routes that accept route parameters
+```python
+from flask import jsonify, make_response
+@app.route('/api/v1.0/posts/<string:author>', methods=['GET'])
+def get_post(author):
+  posts = [{'author':'bob','content':'blah blah'},
+            {'author':'max','content':'new zealand m8'}]
+  response = [p for p in posts if p.author==author]
+  if len(response)==0:
+    return make_response(jsonify({'error':'Not found'}),404)
+  return jsonify({'posts':response})
+```
+
+we can also make routes that accept json data via a `POST` request. Note in the below example that the `request.json` is a dictionary containing the request json, also the request object is created using python's `with` syntax, see http://flask.pocoo.org/docs/0.12/reqcontext/
+```python
+from flask import request, abort, jsonify
+@app.route('/api/v1.0/posts', methods=['POST'])
+def create_post():
+  if not request.json or not 'title' in request.json:
+    abort(404)
+  task = {
+    'id':tasks[-1]['id']+1,
+    'title':request.json['title'],
+    'description':request.json.get('description',""),
+    'done':False
+  }
+  tasks.append(task)
+  return jsonify({'task':task}),201
+```
