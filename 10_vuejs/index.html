@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+
+<p id="message">
+  {{ statement }}
+</p>
+
+<ul id="people_list">
+  <li v-for="p in people">
+    {{ p.text }}
+  </li>
+</ul>
+
+<div id="counter">
+    <p>
+      {{ count }}
+    </p>
+    <button v-on:click="increment">
+      increment count
+    </button>
+</div>
+
+<div id="input">
+  <p>
+    {{ input_message }}
+  </p>
+  <input v-model="input_message" />
+</div>
+
+<div id=records>
+  <ol>
+    <record-item v-for="item in recordList"
+    v-bind:record="item"></record-item>
+  </ol>
+</div>
+
+<script src="test.js"></script>
+</body>
+
+</html>

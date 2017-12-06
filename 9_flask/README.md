@@ -43,7 +43,7 @@ For loops can be used as well
 
 We can insert one template into another via inheritance. We designate a block in one template, any template that inherits from the first template will then be inserted into the block location
 ```html
-<!--- base.html --->
+<!-- base.html -->
 <p>Inherit me!</p>
 <div>
   {% block blockname %}{% endblock %}
@@ -84,7 +84,7 @@ def login():
 ```
 The form looks like the following, note that actions specifies the url to submit the form to, an empty action means it gets submitted to the url of the current page.
 ```html
-<!--- templates/login.html --->
+<!-- templates/login.html -->
 {% extends "base.html" %}
 
 {% block content %}
