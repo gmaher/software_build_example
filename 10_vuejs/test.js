@@ -46,7 +46,55 @@ var record_app = new Vue({
     recordList:[
       {text:'blah',count:0},
       {text:'huurrr',count:1000},
-      {text:"argh",count:-20}
+      {text:"Hi Gabe! ^^",count:-20}
     ]
+  }
+})
+
+var v = new Vue({
+  data:{
+    a:1
+  },
+  created: function () {
+    console.log('a is: '+this.a)
+  }
+})
+
+var raw_app = new Vue({
+  el:"#raw_app",
+  data:{
+    raw:'<span style="color:red">This should be red</span>',
+    dynamic_id:"id1"
+  }
+})
+
+var compue_app = new Vue({
+  el:"#computed",
+  data:{
+    first:"aaa"
+  },
+  computed:{
+    second: function(){
+      return this.first+"bbbb";
+    }
+  }
+})
+
+var watcher_app = new Vue({
+  el:"#watcher",
+  data:{question:'',
+  answer:"no answer"
+  },
+  watch: {
+    question: function(newQuestion){
+      this.answer = "answering"
+      this.getAnswer()
+    }
+  },
+  methods: {
+    getAnswer: function(){
+      var vm = this;
+      vm.answer = "anwered"
+    }
   }
 })

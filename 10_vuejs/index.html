@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <link rel="stylesheet" href="test.css" />
 <script src="https://unpkg.com/vue"></script>
 </head>
 
@@ -20,6 +21,13 @@
     <p>
       {{ count }}
     </p>
+    <p>
+      {{ 2*count-10 }}
+    </p>
+    <p v-if="count>20">
+      You win!
+    </p>
+    <h1 v-on:click="count = count+1">Click me!</h1>
     <button v-on:click="increment">
       increment count
     </button>
@@ -39,7 +47,35 @@
   </ol>
 </div>
 
+<div id="raw_app">
+  <span v-html="raw"></span>
+  <p v-bind:id="dynamic_id">
+    I change color and size
+  </p>
+  <input v-model="dynamic_id" />
+</div>
+
+<div id="computed">
+  <p>
+    {{ first }}
+  </p>
+  <p>
+    {{ second }}
+  </p>
+  <input v-model="first"/>
+</div>
+
+<div id="watcher">
+  <p>
+    ask a question
+  </p>
+  <input v-model="question" />
+  <p>
+    {{ answer }}
+  </p>
+</div>
 <script src="test.js"></script>
+
 </body>
 
 </html>
