@@ -76,6 +76,9 @@ var compue_app = new Vue({
   computed:{
     second: function(){
       return this.first+"bbbb";
+    },
+    url: function(){
+      return "www.google.com/"+this.first
     }
   }
 })
@@ -96,5 +99,54 @@ var watcher_app = new Vue({
       var vm = this;
       vm.answer = "anwered"
     }
+  }
+})
+
+var shadow_app = new Vue({
+  el:"#shadow_app",
+  data:{
+    isshadow:false,
+    isspinning:true,
+    styleObject:{
+      color:"purple",
+      fontSize:"30px"
+    }
+  },
+  computed: {
+    classObject: function(){
+      return {'spinningon':this.isspinning, 'shadowon':this.isshadow}
+    }
+  },
+  methods:{
+    toggle_shadow:function(){
+      this.isshadow = !this.isshadow
+    }
+  }
+})
+
+var event_app = new Vue({
+  el:"#event_app",
+  data:{
+    name:"This is my name"
+  },
+  methods:{
+    greet: function(event){
+      alert("Hello " + this.name + "! " + event)
+
+    }
+  }
+})
+
+var checkbox_app = new Vue({
+  el:"#checklist_app",
+  data:{
+    checkArray: []
+  }
+})
+
+new Vue({
+  el:"#select",
+  data:{
+    select:""
   }
 })

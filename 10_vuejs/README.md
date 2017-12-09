@@ -25,3 +25,8 @@ Vue.component('component_2',{
   }
 })
 ```
+
+## forms and inputs
+
+We can use directly reference an array in an input tag with `v-model` and it will
+know to populate the correct array.

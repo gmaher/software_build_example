@@ -45,6 +45,9 @@
     <record-item v-for="item in recordList"
     v-bind:record="item"></record-item>
   </ol>
+  <!--<ol>
+    <li v-for="{item,index} in recordList">{{item.text}},{{index}}</li>
+  </ol> -->
 </div>
 
 <div id="raw_app">
@@ -62,6 +65,7 @@
   <p>
     {{ second }}
   </p>
+  <a v-bind:href="url">link to {{ url }}</a>
   <input v-model="first"/>
 </div>
 
@@ -74,6 +78,47 @@
     {{ answer }}
   </p>
 </div>
+
+<div id="shadow_app">
+  <h1 style="color:red;" v-bind:class={shadowon:isshadow}>shadow!!!!</h1>
+  <p v-bind:class="classObject">
+    Spin me!
+  </p>
+  <p v-bind:style="styleObject">
+    hurrrrr
+  </p>
+  <button v-on:click="toggle_shadow">shadow on/off</button>
+  <template v-if="isshadow">
+    <h1>True</h1>
+  </template>
+  <template v-else>
+    <h1>False</h1>
+  </template>
+</div>
+
+<div id="event_app">
+  <button v-on:click="greet" v-on:keyup.enter="greet">Click me!</button>
+</div>
+
+<div id="checklist_app">
+  <input type="checkbox" id="jack" value="Jack" v-model="checkArray" />
+  <label for="jack">Jack</label>
+  <input type="checkbox" id="bob" value="Bob" v-model="checkArray" />
+  <label for="bob">Bob</label>
+  <p>
+    {{checkArray}}
+  </p>
+</div>
+
+<div id="select">
+<select v-model="select">
+  <option disabled value="">Please select one</option>
+  <option>choice1</option>
+  <option>aaaaa</option>
+</select>
+<span>Selected: {{ select }}</span>
+</div>
+
 <script src="test.js"></script>
 
 </body>

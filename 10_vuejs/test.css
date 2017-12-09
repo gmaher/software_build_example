@@ -9,3 +9,28 @@
   font-family: comic;
   font-size:10px;
 }
+
+@keyframes shadow {
+  from {box-shadow: 0px 0px 0px grey;}
+  to {box-shadow: 20px 20px 5px grey;}
+}
+
+@keyframes spinning {
+  from {transform:rotate(0.0turn);}
+  to {transform:rotate(1.0turn);}
+}
+
+.shadowon {
+  animation-name: shadow;
+  animation-duration: 5s;
+}
+
+.spinningon {
+  animation-name: spinning;
+  animation-iteration-count: infinite;
+}
+
+.green {
+  color:green;
+}
+.
