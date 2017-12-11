@@ -12,17 +12,17 @@ blog_posts = [
         "author":"Someone else"},
 ]
 
-// Vue.component('blog_post', {
-//   props: ['post'],
-//   template: "<div><h2>{{post.title}}</h2>\
-//               <h3>{{post.author}}</h3> \
-//               <p>{{post.content}}</p></div>"
-// })
+Vue.component('blog_post', {
+  props: ['post'],
+  template: "<div><h2>{{post.title}}</h2>\
+              <h3>{{post.author}}</h3> \
+              <p>{{post.content}}</p></div>"
+})
 
 Vue.component('blog', {
   props: ['blog_title','posts'],
   template: "<div><div><h1>{{blog_title}}</h1></div>\
-  <p>{{posts}}</p>\
+    <blog_post v-for='post in posts' v-bind:post='post'></blog_post>\
   </div></div>"
 })
 
