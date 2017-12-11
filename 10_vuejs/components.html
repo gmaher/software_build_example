@@ -1,8 +1,12 @@
 <html>
 <head>
 <script src="https://unpkg.com/vue"></script>
+
 </head>
 <body>
-
+  <div id="app">
+    <blog title="my blog" v-bind:posts="blog_posts"></blog>
+  </div>
+  <script src="components.js"></script>
 </body>
 </html>
