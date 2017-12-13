@@ -1,4 +1,4 @@
-var say = require("say.js")
+var say = require("./say.js")
 
 function make_a_statement(){
   say.say_something();
