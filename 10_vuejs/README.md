@@ -31,6 +31,45 @@ Vue.component('component_2',{
 We can use directly reference an array in an input tag with `v-model` and it will
 know to populate the correct array.
 
+## transitions
+Vue provides the `<transition></transition>` tag to allow transition effects to be aded to html elements with condition rendering. It does this by analyzing which tags have conditional rendering and applies the necessary classes and css to at the required times to activate the animations.
+
+In particular vue.js adds a number of classes at the different stages of the transition, these are
+```
+v-enter         (starting enter state)
+v-enter-active  (active state when entering)
+v-enter-to      (only 2.1.8+)
+v-leave         (starting leave state)
+v-leave-active  (active state when leaving)
+v-leave-to      (only 2.1.8+)
+```
+we can then access these states by applying css transitions to the relevant classes
+```html
+<div id="demo">
+  <button v-on:click="show = !show">
+    Toggle
+  </button>
+  <transition name="fade">
+    <p v-if="show">hello</p>
+  </transition>
+</div>
+```
+```javascript
+new Vue({
+  el: '#demo',
+  data: {
+    show: true
+  }
+})
+```
+```css
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0
+}
+```
 ## Routing with Vue.js
 
 We can use Vue.js with 3rd party routers or with its own router `vue-router`. Vue-router is a javascript library that we can install with npm, or we can include the script manually.
@@ -144,11 +183,139 @@ const router = new VueRouter({
 e.g. we can now use the url `/search?q=Vue`
 
 ### History mode
+The default setting of vue-router is to use hashes in the url to identify page changes. If we do not want to use hashes then we need to enable html5 history mode.
+```javascript
+const router = new VueRouter({
+  mode:"history",
+  routes: [...]
+})
+```
+However since we are using client-side routing, if a user now directly accesses a child url without first loading the main app, then they will get a 404 error.
+
+We can get around this by redirecting the user to the homepage using server-side routing if the requested url does not match any of our html pages.
+e.g. using node.js
+```javascript
+const http = require('http')
+const fs = require('fs')
+const httpPort = 80
+
+http.createServer((req, res) => {
+  fs.readFile('index.htm', 'utf-8', (err, content) => {
+    if (err) {
+      console.log('We cannot open "index.htm" file.')
+    }
+
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
+    })
+
+    res.end(content)
+  })
+}).listen(httpPort, () => {
+  console.log('Server listening on: http://localhost:%s', httpPort)
+})
+```
 
 ### Navigation Guards
+Navigation guards let us specify computation that is done before a route is accessed, e.g. checking whether a user is authenticated or not for premium routes etc. We can use guards globally for all routes, or for specific routes
 
+a global guard can be used using the `router.beforeEach` method which takes a function as an argument:
+```javascript
+router.beforeEach(function(to,from,next){
+
+})
+```
+`to` and `from` are the to and from route objects, next is a function that determines the behavior after the guard. We can use
+```javascript
+next() //move to next guard/hook/url
+next(false) //abort navigation request
+next('/')
+next({path:'/'}) // navigate to different url
+```
+we can also use `router.afterEach(to,from)` to perform computation after all routes
+
+For specific routes we can pass the navigation guard when defining the routes and passing them to the router using the `beforeEnter` attribute of that route.
+```javascript
+const router = new VueRouter({
+  routes : [
+    {
+      path:'/foo',
+      component:Foo,
+      beforeEnter: (to,from,next) => {
+
+      }
+    }
+  ]
+})
+```
+
+we can also define navigation guards as attributes of components
+```javascript
+const Foo = {
+  template: `...`,
+  beforeRouteEnter (to, from, next) {
+    // called before the route that renders this component is confirmed.
+    // does NOT have access to `this` component instance,
+    // because it has not been created yet when this guard is called!
+  },
+  beforeRouteUpdate (to, from, next) {
+    // called when the route that renders this component has changed,
+    // but this component is reused in the new route.
+    // For example, for a route with dynamic params `/foo/:id`, when we
+    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+    // will be reused, and this hook will be called when that happens.
+    // has access to `this` component instance.
+  },
+  beforeRouteLeave (to, from, next) {
+    // called when the route that renders this component is about to
+    // be navigated away from.
+    // has access to `this` component instance.
+  }
+}
+```
+a common pattern is to ask a user whether they are certain they want to leave a page:
+```javascript
+beforeRouteLeave (to, from , next) {
+  const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+  if (answer) {
+    next()
+  } else {
+    next(false)
+  }
+}
+```
 ### Route Meta Fields
-
+We can include metadata when constructing route objects using the `meta` attribut and specifying a javascript object, e.g.
+```javascript
+const router = new VueRouter({
+  routes : [
+    {
+      path: "/foo",
+      component: Foo,
+      meta: {requiresAuth: true}
+    }
+  ]
+})
+```
+we can then access the meta field e.g. in a navigation guard. Additionally route objects have the `matched` attribute, which is an array of all routes matched by the current route url, e.g. `/user/foo` will match `/user/foo` and `/user`. We can use this to check all the metadata of all matched routes.
+```javascript
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // make sure to always call next()!
+  }
+})
+```
 ### Transitions
 
 ### Fetching Data
