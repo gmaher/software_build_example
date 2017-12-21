@@ -1,4 +1,5 @@
 #SELF ADDED
+10_vuejs/webpack/node_modules/
 *.cmake
 */CMakeCache.txt
 */CMakeFiles

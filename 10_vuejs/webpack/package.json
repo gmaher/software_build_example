@@ -1,0 +1,14 @@
+{
+  "name": "vue-test",
+  "version": "1.0.0",
+  "author": "me",
+  "dependencies": {
+    "vue": "2.5.0",
+    "vue-loader": "^13.0.5",
+    "vue-template-compiler": "^2.4.4",
+    "css-loader": "^0.28.7",
+    "babel-core": "^6.0.0",
+    "babel-loader": "^7.0.0",
+    "webpack": "^3.6.0"
+  }
+}
