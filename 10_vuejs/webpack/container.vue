@@ -1,5 +1,6 @@
 <template>
 <div>
+  <phrase v-bind:style="styleObject" v-bind:phrase="from container"></phrase>
 </div>
 </template>
 

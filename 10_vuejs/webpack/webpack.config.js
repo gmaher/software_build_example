@@ -9,15 +9,15 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    rules: [
+    loaders: [
       {
-        test: '/\.vue$/',
-        loader: 'vue-loader'
+        test:/\.js$/,
+        loader:'babel-loader',
+        exclude:/node_modules/
       },
       {
-        test: '/\.js$/',
-        loader: 'babel-loader',
-        exclude: '/node_modules/'
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ]
   }

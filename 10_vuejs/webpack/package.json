@@ -2,13 +2,18 @@
   "name": "vue-test",
   "version": "1.0.0",
   "author": "me",
+  "scripts": {
+    "webpack": "webpack"
+  },
   "dependencies": {
     "vue": "2.5.0",
     "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
+    "vue-template-compiler": "2.5.0",
     "css-loader": "^0.28.7",
     "babel-core": "^6.0.0",
     "babel-loader": "^7.0.0",
+    "babel-plugin-transform-runtime": "^6.1.2",
+    "babel-preset-env": "^1.6.0",
     "webpack": "^3.6.0"
   }
 }
