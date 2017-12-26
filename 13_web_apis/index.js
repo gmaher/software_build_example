@@ -4,6 +4,12 @@ var title = document.createElement('h1');
 title.textContent = "I was made with javascript!";
 document.body.appendChild(title);
 
+function myAlert(){
+  alert("you clicked me!");
+}
+
+title.addEventListener('click',myAlert);
+
 //Note finds the first element with link id
 var link = document.querySelector('#link');
 //Now changing the properties of the link element

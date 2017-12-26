@@ -13,12 +13,21 @@
   <button onclick="add_p()">add p</button>
   <button onclick="remove_p()">remove p</button>
   <button onclick="highlight()">highlight</button>
-  <input onblur="change_color()"/>
+
+  <label for="color_input">color input</label>
+  <input name="color_input" onblur="change_color()"/>
+
+  <label for="file_input">file input</label>
+  <input name="file_input" onblur="get_file()" id="file_input"/>
+
   <p>
     hi
   </p>
   <a id="link">empty link</a>
+  <div style="background-color:green">
+  </div>
   <script src="index.js"></script>
   <script src="balls.js"></script>
   <script src="http.js"></script>
+  <script src="window.js"></script>
 </body>
