@@ -2,12 +2,15 @@
   <div id="app">
     <img src="./assets/logo.png">
     <router-view/>
+    <stack v-bind:other_children="[]"></stack>
   </div>
 </template>
 
 <script>
+import stack from './stack.vue'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {stack}
 }
 </script>
 
