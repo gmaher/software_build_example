@@ -19,3 +19,7 @@ WHERE
 SELECT first_name, last_name, age FROM my_contacts
 WHERE
   NOT age BETWEEN 50 AND 75;
+
+SELECT note FROM my_contacts
+WHERE
+  note LIKE '%''%';

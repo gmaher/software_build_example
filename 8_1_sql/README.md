@@ -209,3 +209,76 @@ We can use the `_` wildcard to select rows where the column has only one charact
 SELECT * FROM table_name
 WHERE column LIKE '_value';
 ```
+
+# Modifying data (Update and Delete)
+## Delete
+```SQL
+DELETE FROM table_name
+where column_name = value;
+```
+Of course we can use any combination of conditions with `DELETE` as we did with `SELECT`.
+
+`DELETE` will delete all records matching the `WHERE` clause so we need to make sure it matches only the records we really want to delete.
+
+**Tip**: We can always try a `SELECT` first with the same `WHERE` condition to see what rows we are about to delete.
+
+## Updating with Insert and Delete
+To update a row, we can insert a new row with the updated values and delete the old one.
+
+## Updating in one step with the `UPDATE` command
+```SQL
+UPDATE table_name
+SET column_name = value
+WHERE other_column = other_value;
+```
+We can also do multiple `SET`s at the same time
+```SQL
+UPDATE table_name
+SET column1 = value1,
+column2 = value2
+WHERE other_column = other_value;
+```
+Not that if we leav out the `WHERE` clause *every row* will be updated with the `SET` values, which we probably do not want.
+
+### Variable updates
+Sometimes we want to modify a column relative to it's current values, e.g. *increase every person's age by 1*, we can use `UPDATE` commands for this and use the column name as a *variable value*.
+```SQL
+UPDATE table_name
+SET
+column = column+1;
+```
+
+# Table Design
+A table typically describes one **thing/object**, e.g. a person's information. If we wanted to include data on people's cars we would use a **separate car table** and then include a **relationship** between the person and car tables.
+
+When the data has been broken down into the smallest pieces that make sense it is called **atomic**. Often the way we break the data into atomic pieces depends on how we want to use the data. What information are do we need to search for often, etc.?
+
+## Primary keys
+A primary key is a column in our table that makes every row unique, for example and account number or personal identification number.
+
+Note that primary keys, by their definition, cannot be `NULL` and must be assigned when inserting every row.
+
+### Creating Data with primary keys
+To use primary keys we need to specify one of the table columns as a primary key when creating the table.
+```SQL
+CREATE TABLE table_name
+(
+  column1 type1,
+  column2 type2,
+  column3 type3,
+  PRIMARY KEY (column1)
+);
+```
+However, this way we will have to specify the primary key value ourselves every time a row is created. An alternative is to let the SQL database software keep track of the primary key for us, using the `AUTO_INCREMENT` specifier.
+```SQL
+CREATE TABLE table_name
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  column1 value1,
+  column2 value2,
+  PRIMARY KEY(id)
+);
+```
+Now when we insert a new row and leave the primary key value unspecified, the SQL software will automatically assign a value for us.
+
+# Altering tables
