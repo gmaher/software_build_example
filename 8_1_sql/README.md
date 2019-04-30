@@ -91,7 +91,7 @@ CREATE TABLE table_name
 ```
 #### variable types
 Sometimes variable types are different depending on the SQL server software used.
-* **DEC(PRE,POST)/DEC(PRECISION,SCALE)** - decimal, floating point number, *PRE* and *POST* are number of digits before and after the decimal. *PRECISION* and is the total number o significant digits and *SCALE* is the number of significant digits after the decimal. 
+* **DEC(PRE,POST)/DEC(PRECISION,SCALE)** - decimal, floating point number, *PRE* and *POST* are number of digits before and after the decimal. *PRECISION* and is the total number o significant digits and *SCALE* is the number of significant digits after the decimal.
 * **CHAR(LENGTH)** - character, fixed length strings
 * **DATETIME/TIMESTAMP**, date and time data
 * **DATE**, date only
@@ -153,7 +153,7 @@ where column = value;
 ```SQL
 SELECT * FROM table_name WHERE column_name = value;
 ```
-Can also use other comparison operators such as `<` and `>`, `<=`, `=>` and `<>` (not equal to).
+Can also use other comparison operators such as `<` and `>`, `<=`, `>=` and `<>` (not equal to).
 
 Note that comparison operators work for strings, and will compare them alphabetically.
 
