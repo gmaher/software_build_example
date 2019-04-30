@@ -91,7 +91,7 @@ CREATE TABLE table_name
 ```
 #### variable types
 Sometimes variable types are different depending on the SQL server software used.
-* **DEC(PRE,POST)** - decimal, floating point number, *PRE* and *POST* are number of digits before and after the decimal.
+* **DEC(PRE,POST)/DEC(PRECISION,SCALE)** - decimal, floating point number, *PRE* and *POST* are number of digits before and after the decimal. *PRECISION* and is the total number o significant digits and *SCALE* is the number of significant digits after the decimal. 
 * **CHAR(LENGTH)** - character, fixed length strings
 * **DATETIME/TIMESTAMP**, date and time data
 * **DATE**, date only
@@ -117,11 +117,95 @@ VALUES
 ```
 Note the `''` marks for strings, numbers don't need them.
 
+Can also do multiple inserts simultaneously
+```SQL
+INSERT INTO table_name
+  (column_name1, column_name2)
+VALUES
+  ('value11', 'value12'),
+  ('value21', 'value22');
+```
+#### data with special characters
+If we have data that has an apostrophe in it, e.g. `company - Bob's Whelks`, we need to escape the apostrophe with a backslash `\`
+```SQL
+INSERT INTO customers
+  (name, company)
+VALUES
+  ('John Doe', 'Bob\'s Whelks');
+```
+
 #### null columns
 We can insert data while omitting certain columns, the inserted data will then have `NULL` as a value for those columns.
 
 Note that `NULL` values will always compare to false, that is `NULL == NULL` is false.
-### Selecting data
+# Selecting data (querying)
+## Select all data from a table
 ```SQL
 SELECT * FROM table_name;
+```
+## select only specific columns
+```SQL
+SELECT column1, column2, column3 FROM table_name
+where column = value;
+```
+
+## Filter on a column value
+```SQL
+SELECT * FROM table_name WHERE column_name = value;
+```
+Can also use other comparison operators such as `<` and `>`, `<=`, `=>` and `<>` (not equal to).
+
+Note that comparison operators work for strings, and will compare them alphabetically.
+
+Note that if `value` had an apostrophe here, we would also have to escape it with a backslash `\`, or use double quotes `''`.
+
+### filter on multiple conditions
+Can use the `AND` operator and the `OR` operator.
+```SQL
+SELECT column1, column2
+FROM table_name
+WHERE column_a = value_a
+AND column_b = value_b;
+```
+to find `NULL` we can use the `IS NULL` operator.
+```SQL
+SELECT column1, column2
+FROM table_name
+WHERE column_a = value_a
+AND column_b IS NULL;
+```
+We can also select for ranges
+```SQL
+SELECT column1, column2
+FROM table_name
+WHERE column_a <= 10
+AND column_a => 30;
+```
+or using the `BETWEEN` statement
+```SQL
+SELECT column1, column2
+FROM table_name
+WHERE column_a BETWEEN 10 and 30;
+```
+Similarly `WHERE NOT column BETWEEN` selects everything outside the range (note the `NOT` is before the column name)
+
+We can select for multiple values at a time using the `IN` statement
+```SQL
+SELECT * from table_name
+WHERE column in (value1, value2, value3);
+```
+Similarly `NOT IN` will select for all rows with values not equal to those specified (note the `NOT` is after the column name here).
+
+### Filter for partial matches (wildcards)
+We can use `LIKE` and the wildcard symbol `%` to select rows with columns that partially match an expression.
+```SQL
+SELECT * FROM table_name
+WHERE column LIKE '%value';
+```
+will select every row from `table_name` where `column` ends in `value`
+
+We can use the `_` wildcard to select rows where the column has only one character in addition to the expression
+```SQL
+SELECT * FROM table_name
+WHERE column LIKE '_value';
 ```

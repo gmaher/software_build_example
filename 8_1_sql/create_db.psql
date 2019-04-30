@@ -9,7 +9,8 @@ CREATE TABLE my_contacts
   birthday DATE,
   age INT,
   joined TIMESTAMP,
-  note TEXT
+  note TEXT,
+  rating DEC(3,1)
 );
 
 INSERT INTO my_contacts
@@ -19,18 +20,19 @@ INSERT INTO my_contacts
   birthday,
   joined,
   note,
-  age
+  age,
+  rating
 )
 VALUES
-(
-  'Dylan',
-  'Bob',
-  '1980-09-05',
-  '200-01-01 00:10:11',
-  'Damn this guy has some good music',
-  56
-);
+('Dylan', 'Bob', '1980-09-05', '2000-01-01 00:10:11',
+  'Damn this guy has some good music', 56, 8.2),
+('Elvis', 'Presley', '1960-04-05', '1970-03-01 00:10:11',
+  'He''s not bad either', 87, 9.3),
+('Jimmy', 'Hendrix', '1940-01-10', '1955-07-03 10:09:11',
+  'Gotta love all along the Watchtower', 100, 10.0),
+('Blues', 'Brothers', '2000-05-15', '1982-07-21 23:10:11',
+  'They sure can park', 42, 7.8),
+('Dylan', 'Bob', '1980-09-05', '200-01-01 00:10:11',
+  'Damn this guy has some good music', 56, 8.2);
 
 \d my_contacts;
-
-SELECT * FROM my_contacts;
