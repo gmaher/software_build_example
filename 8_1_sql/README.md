@@ -50,7 +50,11 @@ DROP DATABASE database_name;
 ### Use a database
 Causes all subsequent SQL commands to refer to the selected database (e.g. creating tables).
 ```SQL
-USE database_name
+USE database_name;
+```
+Note in postgres instead use the `\c` command
+```SQL
+\c database_name
 ```
 ## tables commands
 ### Creating a table
@@ -100,7 +104,10 @@ Sometimes variable types are different depending on the SQL server software used
 ```SQL
 DESC table_name;
 ```
-
+Note in postgres use the `\d` command
+```SQL
+\d database_name
+```
 ### Inserting data into a table
 ```SQL
 INSERT INTO table_name
