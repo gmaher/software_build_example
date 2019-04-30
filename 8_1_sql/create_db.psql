@@ -1,0 +1,36 @@
+CREATE DATABASE gregs_list;
+
+\c gregs_list;
+
+CREATE TABLE my_contacts
+(
+  last_name VARCHAR(30),
+  first_name VARCHAR(20),
+  birthday DATE,
+  age INT,
+  joined TIMESTAMP,
+  note TEXT
+);
+
+INSERT INTO my_contacts
+(
+  last_name,
+  first_name,
+  birthday,
+  joined,
+  note,
+  age
+)
+VALUES
+(
+  'Dylan',
+  'Bob',
+  '1980-09-05',
+  '200-01-01 00:10:11',
+  'Damn this guy has some good music',
+  56
+);
+
+\d my_contacts;
+
+SELECT * FROM my_contacts;
