@@ -282,3 +282,71 @@ CREATE TABLE table_name
 Now when we insert a new row and leave the primary key value unspecified, the SQL software will automatically assign a value for us.
 
 # Altering tables
+We can use the `ALTER` command to add new columns to a table.
+```SQL
+ALTER TABLE table_name
+ADD COLUMN column_name column_type;
+```
+We can specify the position of the new column too using `AFTER` or `BEFORE`
+```SQL
+ALTER TABLE table_name
+ADD COLUMN column_name column_type
+AFTER other_column;
+```
+
+Adding a new primary key can be done with the alter command.
+```SQL
+ALTER TABLE table_name
+ADD COLUMN id INT NOT NULL AUTO_INCREMENT FIRST,
+ADD PRIMARY KEY(id);
+```
+
+We can also rename a table
+```SQL
+ALTER TABLE table_name
+RENAME TO other_name;
+```
+
+We can also change the name and type of a column
+```SQL
+ALTER TABLE table_name
+CHANGE COLUMN original_name new_name type;
+```
+and we can do multiple changes at the same time
+```SQL
+ALTER TABLE table_name
+CHANGE COLUMN original_name1 new_name1 type1,
+CHANGE COLUMN original_name2 new_name2 type2;
+```
+
+What if we only want to change the type and not the name? We can use the `MODIFY`
+```SQL
+ALTER TABLE table_name
+MODIFY COLUMN column1 new_type;
+```
+
+What if we want to remove a column? We can use the `DROP` command
+```SQL
+ALTER TABLE table_name
+DROP COLUMN column_name;
+```
+
+#Advanced Selecting
+When selecting data we can order the data and group it as well as perform math operations on it.
+
+We can order the results of a query by using the `ORDER BY` command
+```SQL
+SELECT * FROM table_name
+ORDER BY column;
+```
+
+We can use the `CASE` command to make updates based on multiple conditions
+```SQL
+UPDATE table_name
+SET column =
+CASE
+  WHEN column1 = value1 THEN newvalue1
+  WHEN column2 = value2 THEN newvalue2
+  ELSE newvalue3
+END;
+```
