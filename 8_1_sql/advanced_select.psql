@@ -1,0 +1,9 @@
+\c gregs_list
+
+SELECT first_name, AVG(age) FROM my_contacts
+GROUP BY first_name;
+
+SELECT SUM(age) FROM my_contacts;
+
+SELECT COUNT(id) FROM my_contacts
+WHERE first_name != 'Bob';

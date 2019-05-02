@@ -4,13 +4,15 @@ CREATE DATABASE gregs_list;
 
 CREATE TABLE my_contacts
 (
+  id SERIAL,
   last_name VARCHAR(30),
   first_name VARCHAR(20),
   birthday DATE,
   age INT,
   joined TIMESTAMP,
   note TEXT,
-  rating DEC(3,1)
+  rating DEC(3,1),
+  PRIMARY KEY(id)
 );
 
 INSERT INTO my_contacts

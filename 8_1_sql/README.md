@@ -153,7 +153,7 @@ where column = value;
 ```SQL
 SELECT * FROM table_name WHERE column_name = value;
 ```
-Can also use other comparison operators such as `<` and `>`, `<=`, `>=` and `<>` (not equal to).
+Can also use other comparison operators such as `<` and `>`, `<=`, `>=` and `<>`, `!=` (not equal to).
 
 Note that comparison operators work for strings, and will compare them alphabetically.
 
@@ -214,7 +214,7 @@ WHERE column LIKE '_value';
 ## Delete
 ```SQL
 DELETE FROM table_name
-where column_name = value;
+WHERE column_name = value;
 ```
 Of course we can use any combination of conditions with `DELETE` as we did with `SELECT`.
 
@@ -331,13 +331,23 @@ ALTER TABLE table_name
 DROP COLUMN column_name;
 ```
 
-#Advanced Selecting
+# Advanced Selecting
 When selecting data we can order the data and group it as well as perform math operations on it.
 
-We can order the results of a query by using the `ORDER BY` command
+We can order the results of a query by using the `ORDER BY` command (results will be ordered by ascending order)
 ```SQL
 SELECT * FROM table_name
 ORDER BY column;
+```
+we can order by multiple columns too
+```SQL
+SELECT * FROM table_name
+ORDER BY column1, column2;
+```
+We can order by descending order by using the `DESC` descriptor
+```SQL
+SELECT * FROM table_name
+ORDER BY column1 DESC;
 ```
 
 We can use the `CASE` command to make updates based on multiple conditions
@@ -350,3 +360,19 @@ CASE
   ELSE newvalue3
 END;
 ```
+
+The `GROUP BY` command will collapse our results into one row for each category in the specified column. Note that since it collapses the data, we need to use an `aggregate` function in our select statement.
+```SQL
+SELECT column1, AVG(column2) FROM table_name
+GROUP BY column1
+```
+
+# SQL functions
+We can use functions to compute derivations of the data we are working with
+```SQL
+SELECT SUM(column)
+FROM table_name;
+```
+Will sum all the `column` etnries of the rows in `table_name`. Similarly we can use `AVG`, `MIN`, `MAX`.
+
+`COUNT` will count the number of rows returned from a query.
