@@ -405,7 +405,95 @@ WHERE SUBSTRING(column_name, start_position, length) = value;
 e.g.
 ```SQL
 SELECT * FROM table_name
-WHERE SUBSTRING(first_name, 0, 4) = `Rich`;
+WHERE SUBSTRING(first_name, 1, 4) = `Rich`;
 ```
 will look for every row where the first four letters of the first name are Rich
+
+The `SUBSTRING_INDEX` function will return the substring of a string before specified number of a specified character appears.
+```SQL
+SELECT SUBSTRING_INDEX(first_name, `a`, 2) FROM table_name
+```
+will return all characters in first_name that come before the second a. (Note `SUBSTRING_INDEX` is not available in PostgresSQL)
 # Multi table SQL
+To express relationships between data with a SQL database, we can use multiple tables. In particular we can model **one-to-one**, **one-to-many** and **many-to-many** relationships.
+
+We do this by creating tables with columns that refer to the primary key of other tables, this is known as a **foreign key**. We specify the foreign key column when creating the table.
+```SQL
+CREATE TABLE table_name
+(
+  column1 type1,
+  column2 type2,
+  column3 type3,
+  FOREIGN KEY (column3),
+  REFERENCES other_table (other_column)
+)
+```
+We have to specify which of the columns is a foreign key, and then specify which table it is referring to and which column in that table. Creating the table in this way will ensure that we can only insert data that contains a foreign key value that actually exists in the table it refers to. With this structure we can model one-to-one and one-to-many relationships.
+
+## Many-to-many relationships
+To model a many-to-many relationship we use a so-called **junction table** in addition to the two tables we want to link. The junction table contains foreign keys from the two original tables.
+
+
+# Joins
+
+## Aliases
+
+Before diving into joins, it is useful to know about aliases. Aliases let us rename the objects and queries we are working with, this makes it less tedious because we will not have to retype long table names all the time.
+
+The `AS` key word can be used to set an alias
+```SQL
+SELECT column AS col
+FROM table_name AS tab
+GROUP BY col;
+```
+However we can also just leave out the `AS` keyword and get the same result (does not work in PostgresSQL?)
+```SQL
+SELECT column col
+FROM table_name tab
+GROUP BY col;
+```
+
+## Cross Join
+A cross join will take every row in one table and merge it with every row in another table, if there are *n* rows in the first table and *m* rows in the second table we end up with *nm* rows after the cross join. A cross join is a type of inner join.
+```SQL
+SELECT A.columna, B.columnb
+FROM table_a AS A
+CROSS JOIN
+table_b AS B;
+```
+
+## Inner join
+An inner join will join rows of two tables, where the two rows meet some specified condition.
+```SQL
+SELECT * FROM table_a AS A
+INNER JOIN
+table_b AS B
+ON condition;
+```
+For example we can test for equality of a foreign key
+```SQL
+SELECT * FROM table_a AS A
+INNER JOIN
+table_b AS B
+ON A.b_id = B.id;
+```
+If the column we want to join on has the same name in table_a and table_b we can use a natural join
+```SQL
+SELECT * FROM table_a
+NATURAL JOIN
+table_b;
+```
+
+## Outer joins
+
+## Self joins
+
+## Unions
+
+# Sub queries
+We can add queries within `()` and use their results in other queries.
+```SQL
+SELECT * FROM table_a AS A
+NATURAL JOIN table_b AS B
+WHERE A.col_a IN (SELECT col_b FROM B);
+```
