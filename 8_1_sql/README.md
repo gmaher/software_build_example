@@ -367,7 +367,7 @@ SELECT column1, AVG(column2) FROM table_name
 GROUP BY column1
 ```
 
-# SQL functions
+## SQL functions
 We can use functions to compute derivations of the data we are working with
 ```SQL
 SELECT SUM(column)
@@ -376,3 +376,36 @@ FROM table_name;
 Will sum all the `column` etnries of the rows in `table_name`. Similarly we can use `AVG`, `MIN`, `MAX`.
 
 `COUNT` will count the number of rows returned from a query.
+
+## Distinct keyword
+`DISTINCT` will select all the distinct values from a column
+```SQL
+SELECT DISTINCT column FROM table;
+```
+
+## Limit
+The limit keyword can be used to limit the number of results returned by the select query
+```SQL
+SELECT * FROM table_name
+LIMIT 2;
+```
+we can use `LIMIT` with two numbers to search through different ranges of rows
+```SQL
+SELECT * FROM table_name
+LIMIT 10, 20;
+```
+will return the 10th through the 20th result.
+
+## Substring
+The `SUBSTRING` function can be used to search for a substring of a column
+```SQL
+SELECT * FROM table_name
+WHERE SUBSTRING(column_name, start_position, length) = value;
+```
+e.g.
+```SQL
+SELECT * FROM table_name
+WHERE SUBSTRING(first_name, 0, 4) = `Rich`;
+```
+will look for every row where the first four letters of the first name are Rich
+# Multi table SQL
