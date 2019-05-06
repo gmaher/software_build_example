@@ -485,10 +485,53 @@ table_b;
 ```
 
 ## Outer joins
+Inner joins will only return a row in the new table if the two tables being joined both have a row containing a match in the joining condition.
+
+An outer join will return a row whether there is a match or not. If there is no match, the columns from the table being joined will have `NULL` as values. For example, in a left outer join, the columns from the right table would be `NULL` if there was no match.
+
+We can use a `LEFT OUTER JOIN`, `RIGHT OUTER JOIN`, and `FULL OUTER JOIN`,
+```SQL
+SELECT * FROM table_a AS A
+LEFT OUTER JOIN
+table_b AS B
+ON A.b_id = B.id;
+```
+`LEFT` and `RIGHT` outer joins work as described above. A `FULL OUTER JOIN` will return rows that match, as well as rows from both tables where there was no match, where if the row came from the left table the right columns will be `NULL` and vice-versa.
+
+Note that an outer join will return multiple rows if there are multiple matches.
 
 ## Self joins
+A self join is where we join a table to itself, typically the table will have a self-referential foreign key. For example, consider a table of people, where for each person, we also keep track of their best friend, who is also a person in the table.
+```SQL
+SELECT A.name, B.name as friend_name
+FROM people AS A
+INNER JOIN people as B
+ON A.friend_id = B.id;
+```
 
 ## Unions
+Unions let us combine the results of different select statements. A union will return all the entries that are in any of the tables being unioned, without duplicates.
+```SQL
+SELECT column FROM table_A
+UNION
+SELECT column FROM table_B
+UNION
+SELECT column FROM table_c;
+```
+Note that multiple columns can be in each select statement, but each SELECT being uinioned must have the same number of columns.
+
+If we do want all the values to be returned, including duplicates, we can use the `UNION ALL` command
+```SQL
+SELECT column FROM table_A
+UNION ALL
+SELECT column FROM table_B
+UNION ALL
+SELECT column FROM table_c;
+```
+
+## Intersections
+
+## Except
 
 # Sub queries
 We can add queries within `()` and use their results in other queries.
@@ -497,3 +540,36 @@ SELECT * FROM table_a AS A
 NATURAL JOIN table_b AS B
 WHERE A.col_a IN (SELECT col_b FROM B);
 ```
+
+## Correlated sub queries
+
+# Joins and sub queries can do the same  thing, when is one the better option?
+For example, we can write an `INNER JOIN` as a sub-query
+```SQL
+SELECT A.col_a, B.col_b
+FROM table_a AS A
+INNER JOIN table_b AS B
+ON A.b_id = B.id;
+```
+can be written as
+```SQL
+SELECT A.col_a,
+(SELECT col_b FROM table_b
+WHERE A.b_id = id)
+FROM table_a AS A;
+```
+
+# Managing a SQL database when multiple people need access
+
+## Check
+
+## Views
+Views can be treated as tables
+
+# Transactions
+
+## ACID - Atomicity, Consistency, Isolation and Durability
+
+# How are queries parsed
+
+# How does a SQL software driver work?
