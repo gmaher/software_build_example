@@ -541,8 +541,61 @@ NATURAL JOIN table_b AS B
 WHERE A.col_a IN (SELECT col_b FROM B);
 ```
 
-## Correlated sub queries
+Sub-queries can appear in the `SELECT` as a table, in the `SELECT` columns list as one of the columns, in the `FROM` clause as a table and in a `HAVING` clause.
 
+Generally subqueries should return a single value, e.g.
+```SQL
+SELECT * FROM table_a as A
+where A.other_col > (SELECT MAX(col_b) FROM B);
+```
+or when using a sub-query as a column
+```SQL
+SELECT A.col_a,
+(SELECT col_b
+FROM table_b AS B
+WHERE A.col_c = B.col_c) AS other_col
+FROM table_a as A;
+```
+This could have also been written as an inner join
+```SQL
+SELECT A.col_a, B.col_b
+FROM table_a AS A
+INNER JOIN table_b as B
+ON A.col_c = B.col_c;
+```
+## Non correlated sub queries
+A non correlated sub query is a sub-query that does not depend on the outer query
+```SQL
+SELECT * FROM table_a as A
+NATURAL JOIN table_b as B
+WHERE A.col_a > (SELECT col_c
+FROM table_c AS C
+WHERE c.col_a = some_unique_value );
+```
+
+## Correlated sub queries
+In a correlated subquery the inner query depends on the outher query.
+```SQL
+SELECT A.col_a, A.col_b
+FROM table_a AS A
+WHERE
+0 < (SELECT COUNT(*) FROM table_b as B
+WHERE B.col_b = A.col_b);
+```
+Correlated sub queries are usually used to find rows in one table that do not exist in another table
+```SQL
+SELECT A.col_a, A.col_b, A.col_c from table_a AS A
+WHERE NOT EXISTS
+(SELECT B.col_a, B.col_b, B.col_c FROM table_b AS B
+WHERE A.b_id = B.id);
+```
+or we can use `EXISTS` to find the rows that do exists at least once
+```SQL
+SELECT A.col_a, A.col_b, A.col_c from table_a AS A
+WHERE EXISTS
+(SELECT B.col_a, B.col_b, B.col_c FROM table_b AS B
+WHERE A.b_id = B.id);
+```
 ## Advanced filtering with subqueries
 The `ALL` command will compare to the maximum value of a sub-query
 ```SQL
@@ -698,3 +751,13 @@ GRANT role_name TO user_name WITH ADMIN OPTION;
 # How are queries parsed
 
 # How does a SQL software driver work?
+
+# Real world examples
+
+## Webshop visits and purchases
+
+## Project management
+
+## Website visitor paths
+
+## Social network friends, hobbies, events
