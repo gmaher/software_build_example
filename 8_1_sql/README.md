@@ -238,7 +238,7 @@ SET column1 = value1,
 column2 = value2
 WHERE other_column = other_value;
 ```
-Not that if we leav out the `WHERE` clause *every row* will be updated with the `SET` values, which we probably do not want.
+Note that if we leav out the `WHERE` clause *every row* will be updated with the `SET` values, which we probably do not want.
 
 ### Variable updates
 Sometimes we want to modify a column relative to it's current values, e.g. *increase every person's age by 1*, we can use `UPDATE` commands for this and use the column name as a *variable value*.
@@ -543,6 +543,20 @@ WHERE A.col_a IN (SELECT col_b FROM B);
 
 ## Correlated sub queries
 
+## Advanced filtering with subqueries
+The `ALL` command will compare to the maximum value of a sub-query
+```SQL
+SELECT column FROM table
+WHERE column > ALL
+(SELECT column FROM table where column > 4);
+```
+`ANY` will find rows that satsify the condition on any of the rows, e.g.
+```SQL
+SELECT column FROM table
+WHERE column < ANY
+(SELECT column FROM table WHERE column > 3);
+```
+
 # Joins and sub queries can do the same  thing, when is one the better option?
 For example, we can write an `INNER JOIN` as a sub-query
 ```SQL
@@ -566,7 +580,118 @@ FROM table_a AS A;
 ## Views
 Views can be treated as tables
 
-# Transactions
+## Transactions
+What do we do if we have multiple queries to do, and we either want all of them to execute, or none of them? For example, checking an account balance, transfering money to another balance, updating the original balance. We can use Transactions for this. Transactions allow us to specify a sequence of SQL commands and either commit to all of them, or have none of them execute.
+
+We first need to use the right storage engine, either InnoDB or BDB. We can alter our table to use the right engine.
+```SQL
+ALTER TABLE table_a TYPE = InnoDB;
+```
+
+We can then use transactions by first typing `START TRANSACTION;` then we type all the SQL statements we want to apply. Afterwards we either type `COMMIT;` to commit the changes or `ROLLBACK;` to revert back to where we started.
+```SQL
+START TRANSACTION;
+SELECT * From table;
+UPDATE table SET column = value where column = other_value;
+SELECT * FROM table;
+ROLLBACK; -- or use COMMIT; here
+SELECT * FROM table;
+```
+
+## Users
+A database can have different user accounts.
+
+The database comes with a root account that can create accounts for all other users. To protect the database a `password` should be set on the root account. How to do this depends on the SQL server software being used.
+
+Next for everyone using the database we can create a separate user account. This too varies per database software.
+
+## Restricting user permissions with GRANT and REVOKE
+The `GRANT` command can be used to decide what permissions a user should have and on which databases/tables. For example we can restrict someone to only be able to `SELECT` from a database and not update or delete rows.
+```SQL
+GRANT SELECT ON
+table_name
+TO user_name;
+```
+
+We can grant multiple permissions at the same time
+```SQL
+GRANT SELECT,UPDATE ON table_name
+TO user_name;
+```
+
+If we want that user to also be able to grant other users permissions we can specify `WITH GRANT OPTION`
+```SQL
+GRANT SELECT ON
+table_name
+TO user_name
+WITH GRANT OPTION;
+```
+
+We can also grant for a specific column
+```SQL
+GRANT SELECT(column) ON table_name TO user_name;
+```
+
+We can grant all priviledges using the `GRANT ALL` command
+```SQL
+GRANT ALL ON table_name
+TO user_name;
+```
+Finally we can grant priviledges on all tables in a database at once using `database_name.*`
+```SQL
+GRANT ALL ON database_name.*
+TO user_name;
+```
+
+The `REVOKE` statement is used to remove permissions
+```SQL
+REVOKE SELECT ON table_name FROM user_name;
+```
+we can also revoke the grant option
+```SQL
+REVOKE GRANT OPTION ON
+SELECT ON table_name
+FROM user_name;
+```
+Note tha if we revoke a permission from that user and the grant option it is revoked from all users that user granted it to as well. We can make this explicit using the `CASCADE` modifier
+```SQL
+REVOKE DELETE ON table_name FROM user_name CASCADE;
+```
+If we want to make sure we do not inadvertently delete somebody elses priviledges we can use the `RESTRICT` modifier, the query will return an error if another user would be affected
+```SQL
+REVOKE DELETE ON table_name FROM user_name RESTRICT;
+```
+## Managing multiple users with roles
+```SQL
+CREATE ROLE role_name;
+```
+Then we grant priviledges to the role
+```SQL
+GRANT SELECT, INSERT ON table_name TO role_name;
+```
+
+Then we grant the role to a user
+```SQL
+GRANT role_name TO user_name;
+```
+
+To remove a role we `DROP` it
+```SQL
+DROP ROLE role_name
+```
+
+Similarly we can revoke a role
+```SQL
+REVOKE role_name FROM user_name;
+```
+or
+```SQL
+REVOKE role_name FROM user_name CASCADE;
+```
+Just like the `WITH GRANT OPTION` we can use `WITH ADMIN OPTION` for roles so users can grant that role to other users
+```SQL
+GRANT role_name TO user_name WITH ADMIN OPTION;
+```
 
 ## ACID - Atomicity, Consistency, Isolation and Durability
 
