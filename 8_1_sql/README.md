@@ -424,7 +424,7 @@ CREATE TABLE table_name
   column1 type1,
   column2 type2,
   column3 type3,
-  FOREIGN KEY (column3),
+  FOREIGN KEY (column3)
   REFERENCES other_table (other_column)
 )
 ```
